@@ -10,9 +10,10 @@ if [ -n "$RUN_ITS" ]; then
 
   wait $PID ## sets exit code from command
 
-  if [ $? -ne 0 ]; then
-    EXIT_CODE=$?
+  EXIT_CODE=$?
+  if [ "$EXIT_CODE" -ne 0 ]; then
     error "Tests failed"
+    tail -n 20 $WORKDIR/target/tests.log
     ./ci/junit-errors-to-stdout.sh
     exit $EXIT_CODE
   fi
@@ -20,14 +21,14 @@ fi
 
 if [ -z "$RUN_ITS" ]; then
   info "Running unit tests..."
-  (mvn -q install > $WORKDIR/target/tests.log) &
+  (mvn -q install &> $WORKDIR/target/tests.log) &
   PID=$!
   show_spinner "$PID"
 
   wait $PID ## sets exit code from command
 
-  if [ $? -ne 0 ]; then
-    EXIT_CODE=$?
+  EXIT_CODE=$?
+  if [ "$EXIT_CODE" -ne 0 ]; then
     error "Tests failed"
     ./ci/junit-errors-to-stdout.sh
     exit $EXIT_CODE
@@ -36,9 +37,10 @@ fi
 
 if [ -n "$BUILD_DOCS" ]; then
   ./ci/build_docs.sh
-  if [ $? -ne 0 ]; then
+  EXIT_CODE=$?
+  if [ "$EXIT_CODE"-ne 0 ]; then
     # Only exit since build_docs.sh would handle its own error messages
-    exit $?
+    exit $EXIT_CODE
   fi
 fi
 
