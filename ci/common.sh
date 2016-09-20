@@ -8,17 +8,13 @@ NORMAL="\e[0m"
 show_spinner()
 {
   local -r pid="${1}"
-  local -r delay='0.75'
+  local -r delay='20'
   local spinstr='\|/-'
   local temp
   while ps a | awk '{print $1}' | grep -q "${pid}"; do
-    temp="${spinstr#?}"
-    printf " [%c]  " "${spinstr}"
-    spinstr=${temp}${spinstr%"${temp}"}
+    echo "Still running..."
     sleep "${delay}"
-    printf "\b\b\b\b\b\b"
   done
-  printf "    \b\b\b\b"
 }
 
 function error() {
