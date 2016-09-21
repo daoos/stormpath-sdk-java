@@ -17,6 +17,7 @@
 
 if [ -e ./ci/stormpath_env.sh ]; then
   source ./ci/stormpath_env.sh
+  export STORMPATH_APPLICATION_HREF=$STORMPATH_TEST_APPLICATION_HREF
 fi
 
 OPTION=${1:-NO_OPTION}
