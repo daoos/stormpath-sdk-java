@@ -15,6 +15,10 @@
 # limitations under the License.
 #
 
+if [ -e ./ci/stormpath_env.sh ]; then
+  source ./ci/stormpath_env.sh
+fi
+
 OPTION=${1:-NO_OPTION}
 OPTION_ARGUMENT01=${2:-NOT_SET}
 OPTION_ARGUMENT02=${3:-NOT_SET}
@@ -53,7 +57,7 @@ case "$OPTION" in
         echo "Using profile: ${PROFILE}"
         cd ${DIR}
         echo "Running TCK now!"
-        mvn --fail-never -Prun-ITs -P$PROFILE clean verify
+        mvn -Prun-ITs -P$PROFILE clean verify
         EXIT_STATUS="$?"
         if [ "$EXIT_STATUS" -ne 0 ]; then
             echo "TCK found errors! :^(. Exit status was $EXIT_STATUS"
