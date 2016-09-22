@@ -14,7 +14,6 @@ if [ -n "$RUN_ITS" ]; then
   if [ "$EXIT_CODE" -ne 0 ]; then
     error "Tests failed"
     ./ci/junit-errors-to-stdout.sh
-    tail -n 200 $WORKDIR/target/tests.log
     exit $EXIT_CODE
   fi
 fi
