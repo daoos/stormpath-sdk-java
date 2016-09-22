@@ -14,12 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-if [ -e ./ci/stormpath_env.sh ]; then
-  source ./ci/stormpath_env.sh
-  export STORMPATH_APPLICATION_HREF=$STORMPATH_TEST_APPLICATION_HREF
-fi
-
 OPTION=${1:-NO_OPTION}
 OPTION_ARGUMENT01=${2:-NOT_SET}
 OPTION_ARGUMENT02=${3:-NOT_SET}
@@ -49,6 +43,11 @@ case "$OPTION" in
         echo "TCK cloned"
         ;;
     run)
+        SCRIPT_DIR=$(cd "$(dirname "$0")"; pwd)
+        if [ -e "$SCRIPT_DIR/ci/stormpath_env.sh" ]; then
+          source ${SCRIPT_DIR}/ci/stormpath_env.sh
+          export STORMPATH_APPLICATION_HREF=$STORMPATH_TEST_APPLICATION_HREF
+        fi
         PROFILE=${OPTION_ARGUMENT01}
         DIR=${OPTION_ARGUMENT02}
         #Let's read the name of the directory where tck was cloned
